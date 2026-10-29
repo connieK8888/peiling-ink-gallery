@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#eee8dc">
+<meta name="description" content="康培玲書法雲展。於筆墨之間，觀看章法、細賞線條，想像作品走入生活。">
+<title>墨境｜培玲書法雲展</title>
+<link rel="stylesheet" href="static/css/reset.css">
+<link rel="stylesheet" href="static/css/base.css">
+<link rel="stylesheet" href="static/css/index.css">
+<script type="module" src="static/js/gallery.js"></script><script type="module" src="static/js/studio.js"></script>
+<script type="module" src="static/js/hero-signature.js"></script>
+</head>
+<body>
+<header class="site-header"><a class="brand" href="#home" aria-label="墨境首頁"><img class="brand-seal" src="assets/peiling-seal.png" alt="有幸福，康培玲常用印章" width="44" height="44"><span>墨境<small>康培玲・書法雲展</small></span></a><nav aria-label="主要導覽"><a href="#collection">作品展廳</a><a href="#studio">虛擬裝裱室</a><a href="#reading">賞析選讀</a></nav><span class="edition">線上首展 · 初版</span></header>
+<main>
+<section class="hero" id="home"><div class="hero-image" aria-hidden="true"></div>
+<div class="light-shadows" aria-hidden="true"></div>
+<div class="hero-content">
+<div class="hero-titles">
+<div class="hero-signature"><p class="vertical-sub">意臨王鐸書唐詩</p><a id="hero-author-stamp" class="hero-author-stamp" href="#home" aria-label="康培玲原印，下載含署名的主視覺圖" aria-disabled="true" title="下載含印記的主視覺圖"><img src="assets/kang-seal-v1.png" alt="康，康培玲原印" width="52" height="52"></a></div>
+<h1>筆墨之間<br>自有天地</h1>
+</div>
+<a class="primary light" href="#collection">入展細賞 <span>↓</span></a>
+<p class="hero-note">從一紙筆墨，走進書寫的風景。</p>
+</div>
+<div class="hero-bottom">
+<span>康培玲書法作品</span>
+</div></section>
+<section class="introduction section" id="preface" aria-labelledby="preface-title">
+<div class="preface-inner"><p class="section-kicker">展覽序言 / PREFACE</p>
+<h2 id="preface-title"><span>遠觀氣韻，</span><span>近讀筆墨。</span></h2>
+<div class="preface-copy"><p>一幅作品，可以從遠處觀看章法，<br>也可以走近，細讀每一筆的起落。</p>
+<p>在這裡，循著自己的步調，從全幅走入局部，<br>讓書寫的風景慢慢展開。</p></div>
+<div class="preface-sign"><img class="preface-seal" src="assets/guan-seal-v1.png" alt="觀，朱文印章" width="46" height="46"><span>於筆墨之間....</span></div></div>
+</section>
+<section id="collection" class="section collection"><div class="section-heading">
+<div>
+<p class="section-kicker">作品展廳 / COLLECTION</p>
+<h2>紙上有境</h2>
+</div>
+<p>循局部入展，從全幅細讀筆墨。</p>
+</div>
+<div class="art-grid poster-grid" id="art-gallery" data-view="featured" aria-live="polite"></div><div class="collection-more"><a class="primary" href="collection.html">瀏覽全部作品 ↗</a></div></section>
+<section class="studio section" id="studio"><div class="section-heading">
+<div>
+<p class="section-kicker">想像入室 / IN YOUR SPACE</p>
+<h2>讓筆墨，走進日常。</h2>
+</div>
+<p>選一件作品，試一種裝裱，想像一處安放。</p>
+</div>
+<div class="studio-layout">
+<div class="room living" id="room" aria-label="作品空間試掛示意">
+<div class="room-art" id="room-art">
+<canvas id="scroll-material" aria-hidden="true" hidden></canvas><canvas id="frame-material" aria-hidden="true"></canvas><div class="mat" id="mat"><img id="room-art-image" src="assets/wang-overview.webp" alt="試掛作品預覽"></div>
+</div>
+<span class="room-label" id="room-label">北歐客廳・AI 場景示意</span>
+</div>
+<form class="studio-controls">
+<label for="studio-art">選擇作品</label><select id="studio-art"></select>
+<fieldset><legend>裝裱形式</legend><div class="choice-row" id="mounts">
+<button type="button" data-mount="frame" class="active" aria-pressed="true">木框</button><button type="button" data-mount="scroll" aria-pressed="false">掛軸</button>
+</div></fieldset>
+<fieldset id="scroll-options" hidden><legend>掛軸樣式</legend>
+<div class="choice-row scroll-style-choices" id="scroll-styles">
+<button type="button" data-scroll="classic" class="active" aria-pressed="true">素雅留白</button>
+<button type="button" data-scroll="rounded" aria-pressed="false">圓角襯底</button>
+<button type="button" data-scroll="offset" aria-pressed="false">錯位疊襯</button>
+<button type="button" data-scroll="bevel" aria-pressed="false">立體折邊</button>
+</div></fieldset>
+<fieldset id="wood-options">
+<legend>木框材質</legend>
+<div class="choice-row" id="frames">
+<button type="button" class="swatch dark active" data-frame="dark" aria-pressed="true"><canvas class="wood-sample" aria-hidden="true"></canvas>胡桃木色</button><button type="button" class="swatch oak" data-frame="oak" aria-pressed="false"><canvas class="wood-sample" aria-hidden="true"></canvas>原木色</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>裱料配色</legend>
+<div class="choice-row" id="mats">
+<button type="button" data-mat="ivory" aria-pressed="true" class="active">米白</button><button type="button" data-mat="gray" aria-pressed="false">暖灰</button>
+</div>
+</fieldset>
+<label for="scene">觀看場域</label><select id="scene"><option value="living">北歐客廳</option>
+<option value="study">北歐書房</option>
+<option value="entry">北歐玄關</option></select><label for="art-size">示意大小 <output id="size-output">100%</output></label><input id="art-size" type="range" min="65" max="135" value="100"><label for="art-position">左右位置</label><input id="art-position" type="range" min="30" max="70" value="50"><p class="studio-disclaimer">場景為 AI 生成的北歐風居家示意，書法採用作品原圖。實際尺寸與裝裱規格待確認，非等比例丈量預覽。</p>
+<button class="primary" id="save-preview" type="button">下載搭配紀錄 ↓</button><p id="studio-status" class="status" aria-live="polite"></p>
+</form>
+</div></section>
+<section class="reading section" id="reading"><div class="section-heading"><div>
+<p class="section-kicker">賞析選讀 / READING ROOM</p>
+<h2>觀書，也讀書。</h2>
+</div></div>
+<div class="reading-placeholder">
+<span class="reading-mark">讀</span><div>
+<h3>書法賞析，陸續整理中。</h3>
+<p>這裡將收錄創作心得與賞析選讀，附作者、出處與原文連結。</p>
+</div>
+<span class="coming">待續</span>
+</div></section>
+<section class="about section" id="about" aria-labelledby="about-title">
+<div class="about-name"><p class="section-kicker">關於我 / ABOUT</p><h2 id="about-title">康培玲</h2><div class="about-sign"><img src="assets/kang-seal-v1.png" alt="康，康培玲原印" width="48" height="48"><span>筆墨・生活・雲展</span></div></div>
+<div class="about-copy"><p class="about-lead">以筆墨記錄書寫，<br>以雲展分享觀看。</p><p>從臨習古人，到作品與生活的相遇。</p>
+<p class="about-contact"><span>聯絡信箱</span><br><a href="mailto:plkang3617@gmail.com">plkang3617@gmail.com</a></p></div>
+</section>
+</main><footer class="site-footer"><a class="brand" href="#home">墨境 <small>培玲書法雲展</small></a><p>作品著作權屬創作者所有。</p>
+<a href="#home">返回頁首 ↑</a></footer>
+
+</body>
+</html>

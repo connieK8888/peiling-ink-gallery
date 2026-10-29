@@ -1,0 +1,22 @@
+/* 輕量 reset：保留既有版面的預設間距，只統一必要的瀏覽器行為。 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}

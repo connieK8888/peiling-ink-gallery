@@ -1,0 +1,17 @@
+.landscape-main { max-width: 1100px; padding: 30px 5vw 32px; margin: auto; }
+.landscape-heading { display: flex; gap: 24px; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+.landscape-heading h1 { font-size: 25px; font-weight: 500; letter-spacing: .25em; }
+.landscape-heading p { font-size: 11px; color: var(--quiet); letter-spacing: .1em; }
+.relief-stage { position: relative; width: min(54vw, 33svh); aspect-ratio: 870 / 1865; margin: 35px auto 82px; perspective: 800px; transform-style: preserve-3d; }
+.relief-paper { position: absolute; inset: -4% -8%; background: #f5f0dc; transform: translateX(-24px) rotateY(-22deg) rotateX(5deg) translateZ(-46px); box-shadow: 24px 18px 38px rgba(65,53,32,.12); }
+.relief-plane { position: absolute; inset: 0; pointer-events: none; transform-style: preserve-3d; }
+.relief-plane img { width: 100%; height: 100%; object-fit: contain; }
+.relief-far { transform: translateX(-18px) rotateY(-22deg) rotateX(5deg) translateZ(0); filter: contrast(.90) drop-shadow(2px 4px 3px rgba(56,49,33,.18)); }
+.relief-middle { transform: translateX(36px) rotateY(-22deg) rotateX(5deg) translateZ(60px); filter: drop-shadow(1px 2px 0 rgba(123,112,80,.45)) drop-shadow(13px 17px 7px rgba(56,49,33,.32)); }
+.relief-near { transform: translateX(92px) translateY(8px) rotateY(-22deg) rotateX(5deg) translateZ(140px); filter: contrast(1.08) drop-shadow(2px 3px 0 rgba(123,112,80,.55)) drop-shadow(23px 29px 10px rgba(56,49,33,.42)); }
+.relief-caption { display: flex; gap: 24px; align-items: center; justify-content: space-between; padding: 12px 0; font-size: 11px; color: var(--quiet); }
+.relief-caption p { letter-spacing: .15em; }.relief-caption span { margin-left: 18px; opacity: .65; }
+.relief-caption a:hover { color: var(--red); }.relief-caption a:focus-visible { outline: 2px solid var(--red); outline-offset: 5px; }
+@media(max-width:640px) { .landscape-main { padding: 25px 5vw; }.landscape-heading { display: block; }.landscape-heading p { margin-top: 12px; }.relief-stage { width: min(51vw, 30svh); margin-top: 34px; }.relief-caption span { margin-left: 10px; } }
+
+@media(max-width:640px) { .relief-middle { transform: translateX(25px) rotateY(-22deg) rotateX(5deg) translateZ(45px); }.relief-near { transform: translateX(66px) translateY(6px) rotateY(-22deg) rotateX(5deg) translateZ(105px); } }

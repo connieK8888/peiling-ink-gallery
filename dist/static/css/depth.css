@@ -1,0 +1,11 @@
+.depth-main { max-width: 1500px; margin: auto; padding: 32px 5% 42px; }
+.depth-main h1 { font-family: var(--display); font-size: clamp(26px,3vw,36px); font-weight: 500; letter-spacing: .16em; margin: 0 0 25px; }
+.flower-player { position: relative; width: 100%; background: #252925; aspect-ratio: 16 / 9; overflow: hidden; }
+.flower-player video { display: block; width: 100%; height: 100%; object-fit: contain; cursor: pointer; }
+.flower-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 76px; height: 76px; border-radius: 50%; border: 1px solid #fff8e6a0; color: #fff8e6; background: #282b26ba; display: grid; place-items: center; padding: 0; cursor: pointer; }
+.flower-play svg { width: 35px; height: 35px; }
+.flower-play:hover { background: #493d30e8; }.flower-play:focus-visible { outline: 3px solid #fff8e6; outline-offset: 5px; }
+.video-status { position: absolute; bottom: 18px; inset-inline: 18px; margin: 0; text-align: center; background: #252925de; color: #fff8e6; padding: 10px; font-size: 15px; }
+.flower-foot { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding-top: 20px; color: var(--quiet); font-size: 14px; }
+.flower-foot p { margin: 0; }.flower-foot a { color: var(--red); white-space: nowrap; }
+@media(max-width:640px) { .depth-main { padding: 25px 4% 35px; }.flower-play { width: 60px; height: 60px; }.flower-play svg { width: 29px; height: 29px; }.flower-foot { align-items: start; flex-direction: column; gap: 10px; } }

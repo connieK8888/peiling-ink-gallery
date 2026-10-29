@@ -1,0 +1,12 @@
+{
+  "name": "peiling-calligraphy-gallery",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "康培玲書法雲展，無建置步驟的靜態網站。",
+  "scripts": {
+    "check": "python3 scripts/check_site.py",
+    "test": "node --test",
+    "serve": "python3 -m http.server 8000 --directory dist"
+  }
+}

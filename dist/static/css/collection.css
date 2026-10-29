@@ -1,0 +1,22 @@
+/* 全部作品頁：共用首頁的策展卡片，維持整齊與留白。 */
+.collection-page .collection { min-height: 70vh; }
+.collection-intro { margin-bottom: 48px; }
+.collection-intro h1 { font-size: clamp(32px, 4vw, 48px); letter-spacing: 6px; margin: 10px 0 16px; }
+.collection-intro > p:not(.section-kicker) { font-size: 14px; color: var(--quiet); }
+.collection-count { margin-top: 22px; letter-spacing: 2px; }
+@media(max-width:640px) { .collection-intro { margin-bottom: 32px; } }
+
+.collection-groups { display: grid; gap: 72px; }
+.collection-group h2 {
+  font-family: var(--font-serif, "Noto Serif TC", serif);
+  font-size: clamp(21px, 2.2vw, 27px);
+  font-weight: 500;
+  letter-spacing: .14em;
+  margin: 0 0 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line, #d8d0c1);
+}
+@media(max-width:640px) {
+  .collection-groups { gap: 48px; }
+  .collection-group h2 { margin-bottom: 22px; padding-bottom: 12px; }
+}
