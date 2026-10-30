@@ -25,7 +25,7 @@ test('studio switches frame/scroll, resizes, exports the scroll, then restores t
   }});
   class Element {
     constructor(id) {
-      this.id = id; this.value = ''; this.style = {}; this.dataset = {}; this.children = [];
+      this.id = id; this.value = ''; this.style = { setProperty(k, v) { this[k] = v; } }; this.dataset = {}; this.children = [];
       this.attributes = {}; this.events = {}; this.clientWidth = 900; this.clientHeight = 600;
       this.offsetWidth = 150; this.offsetHeight = 240;
       this.classList = { toggle() {} };
@@ -50,10 +50,10 @@ test('studio switches frame/scroll, resizes, exports the scroll, then restores t
     if (!elements.has(id)) elements.set(id, new Element(id));
     return elements.get(id);
   };
-  for (const [group, key, values] of [['scroll-styles','scroll',['classic','rounded','offset','bevel']], ['mounts','mount',['frame','scroll']], ['frames','frame',['dark','oak']], ['mats','mat',['ivory','gray']]]) {
+  for (const [group, key, values] of [['scroll-styles','scroll',['classic','rounded','offset','bevel']], ['mounts','mount',['frame','scroll']], ['frames','frame',['oak','dark','white','gold']], ['mats','mat',['ivory','gray']], ['preview-modes','preview',['detail','space']]]) {
     get(group).children = values.map((value) => { const b = new Element(value); b.dataset[key] = value; return b; });
   }
-  get('art-size').value = '100'; get('art-position').value = '50'; get('scene').value = 'living';
+  get('mat-width').value = '10'; get('art-size').value = '100'; get('art-position').value = '50'; get('scene').value = 'living';
   globalThis.document = { getElementById: get, querySelector: () => get('studio-controls'), querySelectorAll: () => [], createElement: (tag) => new Element(tag) };
   globalThis.location = { search: '' };
   globalThis.devicePixelRatio = 1;
@@ -65,6 +65,9 @@ test('studio switches frame/scroll, resizes, exports the scroll, then restores t
   await import('../dist/static/js/studio.js');
   for (let i = 0; i < 30 && !get('room-art-image').src; i++) await new Promise(resolve => setTimeout(resolve, 5));
   assert.ok(get('room-art-image').src);
+  assert.equal(get('space-options').hidden, true);
+  get('preview-modes').children[1].onclick();
+  assert.equal(get('space-options').hidden, false);
   get('mounts').children[1].onclick();
   assert.equal(get('wood-options').hidden, true);
   assert.equal(get('mat').hidden, true);
@@ -85,8 +88,19 @@ test('studio switches frame/scroll, resizes, exports the scroll, then restores t
   assert.equal(get('scroll-options').hidden, true);
   assert.equal(get('mat').hidden, false);
   assert.equal(get('scroll-material').hidden, true);
-  assert.equal(get('room-art').style.width, '');
-  assert.ok(get('room-art').style.height.endsWith('%'));
+  assert.ok(get('room-art').style.width.endsWith('px'));
+  assert.ok(get('room-art').style.height.endsWith('px'));
+  for (const button of get('frames').children) {
+    button.onclick();
+    assert.equal(get('frame-material').dataset.material, button.dataset.frame);
+    await get('save-preview').onclick();
+  }
+  get('mat-width').value = '18'; get('mat-width').events.input();
+  assert.equal(get('mat-width-output').value, '18%');
+  get('preview-modes').children[0].onclick();
+  assert.equal(get('space-options').hidden, true);
+  await get('save-preview').onclick();
+  assert.ok(calls.some(([key,text]) => key === 'fillText' && String(text).includes('裝裱預覽')));
   // Switching from a vertical scroll to a horizontal work must clear scroll state.
   get('mounts').children[1].onclick();
   get('studio-art').value = 'shusu'; get('studio-art').events.input();
