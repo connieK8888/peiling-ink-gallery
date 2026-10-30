@@ -1,3 +1,4 @@
+import { frameLayout } from './frame-layout.js';
 import { scrollStyles, scrollLayout, drawHangingScroll } from './scroll.js';
 import {
   loadArtworks,
@@ -16,11 +17,12 @@ document.querySelector('.studio-controls').addEventListener('submit', (event) =>
 
 let mount = 'frame';
 let scrollStyle = 'classic';
-let frame = 'dark',
+let preview = 'detail';
+let frame = 'oak',
   mat = 'ivory';
 const frameColors = {
     dark: '#493d30',
-    oak: '#b99462'
+    oak: '#b99462', white: '#ded8ca', gold: '#a48955'
   },
   matColors = {
     ivory: '#f4eedf',
@@ -54,7 +56,8 @@ function updateStudio() {
   if ($('room-art-image').getAttribute('src') !== artworks[key].overview) $('room-art-image').src = artworks[key].overview;
   $('room-art-image').alt = artworks[key].title + '・裝裱搭配示意';
   updateMountOptions(artworks[key]);
-  $('room').className = 'room ' + $('scene').value;
+  $('room').className = 'room ' + $('scene').value + (preview === 'detail' ? ' is-detail' : '');
+  $('space-options').hidden = preview !== 'space';
   $('room-art').classList.toggle('is-scroll', mount === 'scroll');
   $('wood-options').hidden = mount === 'scroll';
   $('scroll-options').hidden = mount !== 'scroll';
@@ -62,19 +65,24 @@ function updateStudio() {
   $('frame-material').hidden = mount === 'scroll';
   $('scroll-material').hidden = mount !== 'scroll';
   $('room-art').style.width = '';
+  $('room-art').style.borderWidth = '';
+  $('mat').style.padding = '';
   $('room-art').style.borderColor = 'transparent';
   $('room-art').style.background = mount === 'scroll' ? 'transparent' : frameColors[frame];
   $('mat').style.background = matColors[mat];
   const size = +$('art-size').value;
   $('room-art').style.height = artworks[key].studioHeight * size / 100 + '%';
   $('room-art').style.top = artworks[key].studioTop + '%';
-  $('room-art').style.left = $('art-position').value + '%';
+  $('room-art').style.left = (preview === 'detail' ? 50 : $('art-position').value) + '%';
   $('size-output').value = size + '%';
-  $('room-label').textContent = sceneLabels[$('scene').value] + '・AI 場景示意';
+  $('room-label').textContent = preview === 'detail' ? '裝裱預覽' : sceneLabels[$('scene').value] + '・AI 場景示意';
+  $('mat-width-output').value = $('mat-width').value + '%';
+  const matName = mat === 'ivory' ? '米白' : '暖灰';
+  $('mount-caption').textContent = artworks[key].title + '｜' + (mount === 'scroll' ? scrollStyles[scrollStyle].name + '掛軸' : woodMaterials[frame].name) + '・' + matName + (mount === 'frame' ? '襯紙' : '裱料');
   $('studio-status').textContent = '';
   requestAnimationFrame(paintMount);
 }
-for (const id of ['studio-art', 'scene', 'art-size', 'art-position']) $(id).addEventListener('input', updateStudio);
+for (const id of ['studio-art', 'scene', 'art-size', 'art-position', 'mat-width']) $(id).addEventListener('input', updateStudio);
 for (const [id, attr] of [
     ['mounts', 'mount'],
     ['scroll-styles', 'scroll'],
@@ -94,29 +102,48 @@ for (const [id, attr] of [
 });
 
 function paintMount() {
+  const img = $('room-art-image'), key = $('studio-art').value;
+  if (!artworks[key] || !img.complete || !img.naturalWidth || img.getAttribute('src') !== artworks[key].overview) return;
+  const room = $('room'), host = $('room-art');
+  const left = preview === 'detail' ? 50 : +$('art-position').value;
+  const availableWidth = room.clientWidth * Math.min(left, 100 - left) / 50 - 32;
+  const targetHeight = preview === 'detail' ? room.clientHeight * .82
+    : Math.min(room.clientHeight * .82, room.clientHeight * artworks[key].studioHeight * +$('art-size').value / 10000);
+  host.style.top = preview === 'detail' ? '8%' : Math.min(artworks[key].studioTop, 12) + '%';
   if (mount === 'frame') {
+    const layout = frameLayout(img.naturalWidth, img.naturalHeight, targetHeight, availableWidth,
+      +$('mat-width').value / 100, woodMaterials[frame].railRatio);
+    if (!layout) return;
+    host.style.width = layout.width + 'px';
+    host.style.height = layout.height + 'px';
+    host.style.borderWidth = layout.rail + 'px';
+    host.style.setProperty('--frame-rail', layout.rail + 'px');
+    $('mat').style.padding = layout.mat + 'px';
     paintWoodFrame(frame);
     return;
   }
-  const img = $('room-art-image');
-  const key = $('studio-art').value;
-  // A newly selected image must finish loading before its dimensions are used.
-  if (!img.complete || !img.naturalWidth || !img.src.endsWith(artworks[key].overview)) return;
-  const room = $('room'), host = $('room-art'), surface = $('scroll-material');
-  const desiredHeight = room.clientHeight * artworks[key].studioHeight * +$('art-size').value / 10000;
-  const initial = scrollLayout(img.naturalWidth, img.naturalHeight, desiredHeight, scrollStyle);
-  const fit = Math.min(1, room.clientWidth * .75 / initial.width);
+  const initial = scrollLayout(img.naturalWidth, img.naturalHeight, targetHeight, scrollStyle);
+  const fit = Math.min(1, availableWidth / initial.width);
   const w = initial.width * fit, h = initial.height * fit;
+  host.style.setProperty('--frame-rail', '0px');
   host.style.width = w + 'px';
   host.style.height = h + 'px';
   host.setAttribute('aria-label', scrollStyles[scrollStyle].name + '掛軸裝裱預覽');
-  const dpr = Math.min(devicePixelRatio || 1, 2);
+  const surface = $('scroll-material'), dpr = Math.min(devicePixelRatio || 1, 2);
   surface.width = Math.round(w * dpr);
   surface.height = Math.round(h * dpr);
   const c = surface.getContext('2d');
   c.scale(dpr, dpr);
   drawHangingScroll(c, img, 0, 0, w, h, mat, scrollStyle);
 }
+for (const button of $('preview-modes').querySelectorAll('button')) button.onclick = () => {
+  preview = button.dataset.preview;
+  for (const item of $('preview-modes').querySelectorAll('button')) {
+    item.classList.toggle('active', item === button);
+    item.setAttribute('aria-pressed', String(item === button));
+  }
+  updateStudio();
+};
 $('room-art-image').addEventListener('load', updateStudio);
 
 function drawCover(c, image, x, y, w, h) {
@@ -134,7 +161,9 @@ $('save-preview').onclick = async () => {
       selectedMount = mount,
       selectedScroll = scrollStyle,
       selectedFrame = frame,
-      selectedMat = mat;
+      selectedMat = mat,
+      selectedPreview = preview,
+      selectedMatWidth = $('mat-width').value;
     // Capture the current arrangement so the downloaded composition matches the preview.
     const roomRect = $('room').getBoundingClientRect(),
       frameRect = $('room-art').getBoundingClientRect(),
@@ -155,7 +184,8 @@ $('save-preview').onclick = async () => {
     out.width = 1600;
     out.height = sceneHeight + 210;
     const c = out.getContext('2d');
-    drawCover(c, bg, 0, 0, 1600, sceneHeight);
+    if (selectedPreview === 'space') drawCover(c, bg, 0, 0, 1600, sceneHeight);
+    else { c.fillStyle = '#e9e5dc'; c.fillRect(0, 0, 1600, sceneHeight); }
     if (selectedMount === 'scroll') {
       c.save();
       c.shadowColor = '#241c1a40';
@@ -188,7 +218,7 @@ $('save-preview').onclick = async () => {
       ivory: '米白',
       gray: '暖灰'
     };
-    c.fillText(`${artworks[key].title} · ${sceneLabels[scene]} · ${selectedMount === 'scroll' ? '掛軸・' + scrollStyles[selectedScroll].name + '／' + mn[selectedMat] + '裱料' : woodMaterials[selectedFrame].name + '框／' + mn[selectedMat] + '裱褙'}`, 65, sceneHeight + 105);
+    c.fillText(`${artworks[key].title} · ${selectedPreview === 'space' ? sceneLabels[scene] : '裝裱預覽'} · ${selectedMount === 'scroll' ? '掛軸・' + scrollStyles[selectedScroll].name + '／' + mn[selectedMat] + '裱料' : woodMaterials[selectedFrame].name + '／' + mn[selectedMat] + '襯紙 ' + selectedMatWidth + '%'}`, 65, sceneHeight + 105);
     c.fillStyle = '#746d60';
     c.font = '20px sans-serif';
     c.fillText('AI 場景與裝裱搭配示意，非實際尺寸預覽；作品著作權屬創作者所有。', 65, sceneHeight + 157);

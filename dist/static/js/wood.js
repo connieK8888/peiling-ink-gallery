@@ -2,20 +2,29 @@
 // Shared procedural wood material: consistent on the wall, samples and PNG export.
 export const woodMaterials = {
   dark: {
-    name: '胡桃木色',
+    name: '胡桃木框',
+    railRatio: .032,
     base: [101, 70, 48],
     light: 'rgba(255,224,181,.30)',
     edge: '#3d291e',
     seed: 731
   },
   oak: {
-    name: '原木色',
+    name: '原木細框',
+    railRatio: .024,
     base: [185, 145, 94],
     light: 'rgba(255,241,209,.45)',
     edge: '#795634',
     seed: 1149
+  },
+  white: {
+    name: '暖白細框', railRatio: .026, finish: 'paint',
+    base: [222, 216, 202], light: 'rgba(255,255,249,.65)', edge: '#a49c8c', seed: 2441
+  },
+  gold: {
+    name: '霧金細框', railRatio: .018, finish: 'metal',
+    base: [164, 137, 85], light: 'rgba(255,238,180,.54)', edge: '#766039', seed: 3989
   }
-
 };
 const woodTextures = new Map();
 
@@ -49,12 +58,13 @@ function woodTexture(key) {
         const d = (y - f.y - Math.sin(x * f.freq + f.phase) * f.amp) / f.width;
         value -= Math.exp(-d * d) * 9
       }
+      if (m.finish) value = (rand() - .5) * (m.finish === 'metal' ? 5 : 2) + 2 * Math.sin(y * .07);
       const i = (y * t.width + x) * 4;
       for (let k = 0; k < 3; k++) pixels.data[i + k] = Math.max(0, Math.min(255, m.base[k] + value * (k === 0 ? 1.2 : k === 1 ? 1 : .8)));
       pixels.data[i + 3] = 255;
     }
   c.putImageData(pixels, 0, 0);
-  for (let i = 0; i < 260; i++) {
+  for (let i = 0; i < (m.finish ? 0 : 260); i++) {
     const y = rand() * 160,
       start = rand() * 1200,
       len = rand() * 500 + 30,
@@ -66,7 +76,7 @@ function woodTexture(key) {
     c.lineWidth = rand() * .9 + .3;
     c.stroke();
   }
-  for (let i = 0; i < 1800; i++) {
+  for (let i = 0; i < (m.finish ? 0 : 1800); i++) {
     c.fillStyle = `rgba(38,21,9,${rand()*.09})`;
     c.fillRect(rand() * 1200, rand() * 160, rand() * 9 + 1, .35 + rand() * .45)
   }
@@ -156,7 +166,7 @@ export function paintWoodFrame(key) {
   c.scale(dpr, dpr);
   drawWoodFrame(c, 0, 0, w, h, parseFloat(getComputedStyle(host).borderTopWidth), key);
   surface.dataset.material = key;
-  host.setAttribute('aria-label', woodMaterials[key].name + '畫框預覽');
+  host.setAttribute('aria-label', woodMaterials[key].name + '裝裱預覽');
 }
 export function paintWoodSamples() {
   document.querySelectorAll('[data-frame] .wood-sample').forEach(surface => {

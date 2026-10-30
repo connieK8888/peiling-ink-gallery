@@ -51,16 +51,18 @@
 <p>選一件作品，試一種裝裱，想像一處安放。</p>
 </div>
 <div class="studio-layout">
+<div class="studio-preview"><div class="preview-tabs" id="preview-modes" role="group" aria-label="預覽方式"><button type="button" data-preview="detail" class="active" aria-pressed="true">看裝裱</button><button type="button" data-preview="space" aria-pressed="false">放進空間</button></div>
 <div class="room living" id="room" aria-label="作品空間試掛示意">
 <div class="room-art" id="room-art">
 <canvas id="scroll-material" aria-hidden="true" hidden></canvas><canvas id="frame-material" aria-hidden="true"></canvas><div class="mat" id="mat"><img id="room-art-image" src="assets/wang-overview.webp" alt="試掛作品預覽"></div>
 </div>
 <span class="room-label" id="room-label">北歐客廳・AI 場景示意</span>
 </div>
+<p class="mount-caption" id="mount-caption" aria-live="polite"></p></div>
 <form class="studio-controls">
 <label for="studio-art">選擇作品</label><select id="studio-art"></select>
 <fieldset><legend>裝裱形式</legend><div class="choice-row" id="mounts">
-<button type="button" data-mount="frame" class="active" aria-pressed="true">木框</button><button type="button" data-mount="scroll" aria-pressed="false">掛軸</button>
+<button type="button" data-mount="frame" class="active" aria-pressed="true">畫框</button><button type="button" data-mount="scroll" aria-pressed="false">掛軸</button>
 </div></fieldset>
 <fieldset id="scroll-options" hidden><legend>掛軸樣式</legend>
 <div class="choice-row scroll-style-choices" id="scroll-styles">
@@ -70,10 +72,14 @@
 <button type="button" data-scroll="bevel" aria-pressed="false">立體折邊</button>
 </div></fieldset>
 <fieldset id="wood-options">
-<legend>木框材質</legend>
-<div class="choice-row" id="frames">
-<button type="button" class="swatch dark active" data-frame="dark" aria-pressed="true"><canvas class="wood-sample" aria-hidden="true"></canvas>胡桃木色</button><button type="button" class="swatch oak" data-frame="oak" aria-pressed="false"><canvas class="wood-sample" aria-hidden="true"></canvas>原木色</button>
+<legend>選一款框</legend>
+<div class="choice-row frame-choices" id="frames">
+<button type="button" class="swatch oak active" data-frame="oak" aria-pressed="true"><canvas class="wood-sample" aria-hidden="true"></canvas>原木細框</button>
+<button type="button" class="swatch dark" data-frame="dark" aria-pressed="false"><canvas class="wood-sample" aria-hidden="true"></canvas>胡桃木框</button>
+<button type="button" class="swatch white" data-frame="white" aria-pressed="false"><canvas class="wood-sample" aria-hidden="true"></canvas>暖白細框</button>
+<button type="button" class="swatch gold" data-frame="gold" aria-pressed="false"><canvas class="wood-sample" aria-hidden="true"></canvas>霧金細框</button>
 </div>
+<label for="mat-width" class="mat-width-label">襯紙留白 <output id="mat-width-output">10%</output></label><input id="mat-width" type="range" min="4" max="18" value="10" step="1">
 </fieldset>
 <fieldset>
 <legend>裱料配色</legend>
@@ -81,9 +87,9 @@
 <button type="button" data-mat="ivory" aria-pressed="true" class="active">米白</button><button type="button" data-mat="gray" aria-pressed="false">暖灰</button>
 </div>
 </fieldset>
-<label for="scene">觀看場域</label><select id="scene"><option value="living">北歐客廳</option>
+<fieldset id="space-options" hidden><legend>放進空間</legend><label for="scene">觀看場域</label><select id="scene"><option value="living">北歐客廳</option>
 <option value="study">北歐書房</option>
-<option value="entry">北歐玄關</option></select><label for="art-size">示意大小 <output id="size-output">100%</output></label><input id="art-size" type="range" min="65" max="135" value="100"><label for="art-position">左右位置</label><input id="art-position" type="range" min="30" max="70" value="50"><p class="studio-disclaimer">場景為 AI 生成的北歐風居家示意，書法採用作品原圖。實際尺寸與裝裱規格待確認，非等比例丈量預覽。</p>
+<option value="entry">北歐玄關</option></select><label for="art-size">示意大小 <output id="size-output">100%</output></label><input id="art-size" type="range" min="65" max="135" value="100"><label for="art-position">左右位置</label><input id="art-position" type="range" min="30" max="70" value="50"></fieldset><p class="studio-disclaimer">裝裱搭配示意，保留原作比例；空間為 AI 場景，非實際尺寸丈量。</p>
 <button class="primary" id="save-preview" type="button">下載搭配紀錄 ↓</button><p id="studio-status" class="status" aria-live="polite"></p>
 </form>
 </div></section>
